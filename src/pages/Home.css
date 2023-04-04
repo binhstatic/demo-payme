@@ -1,0 +1,11 @@
+.home {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video {
+  width: 480px;
+  height: 360px;
+  background-color: #333;
+}

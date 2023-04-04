@@ -1,18 +1,18 @@
-// Scripts for firebase and firebase messaging
-// eslint-disable-next-line no-undef
-importScripts('https://www.gstatic.com/firebasejs/8.2.0/firebase-app.js');
-// eslint-disable-next-line no-undef
-importScripts('https://www.gstatic.com/firebasejs/8.2.0/firebase-messaging.js');
+importScripts(
+  'https://www.gstatic.com/firebasejs/9.10.0/firebase-app-compat.js'
+);
+importScripts(
+  'https://www.gstatic.com/firebasejs/9.10.0/firebase-messaging-compat.js'
+);
 
 // Initialize the Firebase app in the service worker by passing the generated config
 const firebaseConfig = {
-  apiKey: 'AIzaSyCrxiK-8TxIM9zbLoOXeNsejBGOoKZN68Y',
-  authDomain: 'notification-5d864.firebaseapp.com',
-  projectId: 'notification-5d864',
-  storageBucket: 'notification-5d864.appspot.com',
-  messagingSenderId: '857899555595',
-  appId: '1:857899555595:web:fd57b87c8bb5dbe009200e',
-  measurementId: 'G-KB22QENM9G',
+  apiKey: 'AIzaSyDTK13Z8hbRn2mDKcxAC53tfV2cy1f_y3Y',
+  authDomain: 'push-app-4e3e5.firebaseapp.com',
+  projectId: 'push-app-4e3e5',
+  storageBucket: 'push-app-4e3e5.appspot.com',
+  messagingSenderId: '1068031560223',
+  appId: '1:1068031560223:web:ff4c42eb43dc658bf5632a',
 };
 
 // eslint-disable-next-line no-undef
@@ -22,18 +22,11 @@ firebase.initializeApp(firebaseConfig);
 // eslint-disable-next-line no-undef
 const messaging = firebase.messaging();
 
-messaging.onBackgroundMessage(function (payload) {
-  console.log('Received background message ', payload);
+messaging.onBackgroundMessage((payload) => {
+  console.log('Received background message: ', payload);
 
   const notificationTitle = payload.notification.title;
-  const notificationOptions = {
-    body: payload.notification.body,
-    icon: '/logo192.png',
-  };
+  const notificationOptions = { body: payload.notification.body };
 
-  // eslint-disable-next-line no-restricted-globals
-  return self.registration.showNotification(
-    notificationTitle,
-    notificationOptions
-  );
+  self.registration.showNotification(notificationTitle, notificationOptions);
 });
