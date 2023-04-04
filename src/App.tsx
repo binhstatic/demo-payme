@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { Products } from './features/products/Products';
-
+import ReactNotificationComponent from './ReactNotification';
 import { CartLink } from './features/cart/CartLink';
 import { Cart } from './features/cart/Cart';
 import styles from './App.module.css';
-import { fetchToken, onMessageListener } from './firebaseNotification/firebase';
+import { fetchToken, onMessageListener } from './firebase';
 import { ToastContainer } from 'react-toastify';
 
 ///messaging
@@ -13,19 +13,19 @@ import { ToastContainer } from 'react-toastify';
 function App() {
   const [show, setShow] = useState(false);
   const [notification, setNotification] = useState({ title: '', body: '' });
-  const [isTokenFound, setTokenFound] = useState(false);
-  fetchToken(setTokenFound);
+
+  console.log(show, notification);
 
   onMessageListener()
     .then((payload: any) => {
+      setShow(true);
       setNotification({
         title: payload.notification.title,
         body: payload.notification.body,
       });
-      setShow(true);
       console.log(payload);
     })
-    .catch((err) => console.log('failed: ', err));
+    .catch((err: any) => console.log('failed: ', err));
 
   const onShowNotificationClicked = () => {
     setNotification({
@@ -49,8 +49,14 @@ function App() {
             <CartLink />
           </nav>
         </header>
-        {isTokenFound && <h1> Notification permission enabled 👍🏻 </h1>}
-        {!isTokenFound && <h1> Need notification permission ❗️ </h1>}
+        {show ? (
+          <ReactNotificationComponent
+            title={notification.title}
+            body={notification.body}
+          />
+        ) : (
+          <></>
+        )}
       </div>
       <Switch>
         <Route exact path='/'>

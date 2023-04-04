@@ -19,7 +19,7 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 const messaging = getMessaging(firebaseApp);
 
-export const fetchToken = (setTokenFound: any) => {
+export const fetchToken = (setTokenFound) => {
   return getToken(messaging, {
     vapidKey: `BK9pG1PjeSIhYxjG8pWtbqrnZI9k2qy0VGpxch6etLlZPelCrcGu4dlTl0eJuGkh5799gmRZLawdPX-wFdopWW8`,
   })
@@ -40,6 +40,23 @@ export const fetchToken = (setTokenFound: any) => {
     .catch((err) => {
       console.log('An error occurred while retrieving token. ', err);
     });
+};
+
+export const getToken = async (setTokenFound) => {
+  let currentToken = '';
+
+  try {
+    currentToken = await messaging.getToken({ vapidKey: publicKey });
+    if (currentToken) {
+      setTokenFound(true);
+    } else {
+      setTokenFound(false);
+    }
+  } catch (error) {
+    console.log('An error occurred while retrieving token. ', error);
+  }
+
+  return currentToken;
 };
 
 export const onMessageListener = () =>
