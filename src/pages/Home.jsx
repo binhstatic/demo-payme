@@ -11,20 +11,22 @@ const Home = () => {
 
   const setUpCamera = () => {
     return new Promise((resolve, reject) => {
-      navigator.mediaDevices.getUserMedia =
-        navigator.mediaDevices.getUserMedia ||
-        navigator.mediaDevices.webkitGetUserMedia ||
-        navigator.mediaDevices.mozGetUserMedia ||
-        navigator.mediaDevices.mstGetUserMedia;
+      navigator.getUserMedia =
+        navigator.getUserMedia ||
+        navigator.webkitGetUserMedia ||
+        navigator.mozGetUserMedia ||
+        navigator.msGetUserMedia;
 
-      if (navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices.getUserMedia(
+      if (navigator.getUserMedia) {
+        navigator.getUserMedia(
           {
             video: true,
           },
           (stream) => {
-            video.current.src = stream;
+            console.log(video);
+            video.current.srcObject = stream;
             video.current.addEventListener('loadeddata', resolve);
+            console.log('hi');
           },
           (error) => reject(error)
         );
